@@ -13,14 +13,15 @@ const iPhone = devices['iPhone 6'];
   await page.goto('http://mstore.ppdai.com/');
   await page.waitFor(1000);
   await page.setCookie({"name":"token","value":"d8c2633b-d430-4558-824e-a22c3226790d"});
-  const searchLink = await page.evaluate((product) => {
-    document.querySelector('.product_name').value=product;
-    return window.location.origin+'/search#'+product
-  },'iPhone');
-  await page.waitFor(1000);
+  await page.waitFor(2000);
+  await page.evaluate(() => {
+    document.querySelector('.product_name').value='';
+  });
+  await page.type('.product_name','iphone',{delay:100})
+  await page.waitFor(2000);
+  await page.click('.toSearchBtn')
 
   //搜索列表页
-  await page.goto(searchLink);
   await page.waitFor(3000);
   const productLink = await page.evaluate(() => {
     const product = document.querySelectorAll('.list_item')[2].children[0];
@@ -43,7 +44,7 @@ const iPhone = devices['iPhone 6'];
   await page.evaluate(() => {
     document.querySelectorAll('.btn')[1].click();
   });
-  await page.waitFor(1000);
+  await page.waitFor(2000);
   await page.click('.comfire_btn');
   await page.waitFor(2000);
 
@@ -60,13 +61,9 @@ const iPhone = devices['iPhone 6'];
     const submitOrder = document.querySelector('#app').children[6].children[0];
     submitOrder.click();
   });
-  await page.waitFor(4000);
-  const payConfirmLink = await page.evaluate(() => {
-    return window.location.href
-  });
 
   //进入支付确认页
-  await page.waitFor(2000);
+  await page.waitFor(4000);
 
   //回到首页
   await page.goto('http://mstore.ppdai.com/');
