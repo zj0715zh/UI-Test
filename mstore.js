@@ -22,10 +22,7 @@ const iPhone = devices['iPhone 6'];
   });
   await page.type('.product_name','iphone',{delay:100})
   await page.waitFor(2000);
-  await page.evaluate(() => {
-    document.querySelector('.toSearchBtn').click();
-  });
-  // await page.click('.toSearchBtn')
+  await page.click('.toSearchBtn')
 
   //搜索列表页
   await page.waitFor(3000);
