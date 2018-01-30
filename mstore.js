@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const devices = require('puppeteer/DeviceDescriptors');
 const iPhone = devices['iPhone 6'];
 (async () => {
-  const browser = await puppeteer.launch({headless:false,ignoreHTTPSErrors: false,devtools: true});
+  const browser = await puppeteer.launch({headless:false,devtools: true});
   const page = await browser.newPage();
   let ArrowCount = 0;
   await page.emulate(iPhone);
@@ -12,16 +12,24 @@ const iPhone = devices['iPhone 6'];
   // page.on('error',error => console.log(error))
   await page.goto('http://mstore.ppdai.com/');
   await page.waitFor(1000);
+
+  await page.screenshot({path: './screenshot/首页.png'});
+
   await page.setCookie({"name":"token","value":"d8c2633b-d430-4558-824e-a22c3226790d"});
-  const searchLink = await page.evaluate((product) => {
-    document.querySelector('.product_name').value=product;
-    return window.location.origin+'/search#'+product
-  },'iPhone');
   await page.waitFor(1000);
+  await page.evaluate(() => {
+    document.querySelector('.product_name').value='';
+  });
+  await page.type('.product_name','iphone',{delay:100})
+  await page.waitFor(2000);
+  await page.evaluate(() => {
+    document.querySelector('.toSearchBtn').click();
+  });
+  // await page.click('.toSearchBtn')
 
   //搜索列表页
-  await page.goto(searchLink);
   await page.waitFor(3000);
+  await page.screenshot({path: './screenshot/搜索列表页.png'});
   const productLink = await page.evaluate(() => {
     const product = document.querySelectorAll('.list_item')[2].children[0];
     product.click();
@@ -29,6 +37,9 @@ const iPhone = devices['iPhone 6'];
 
   //进到产品详情页
   await page.waitFor(4000);
+
+  await page.screenshot({path: './screenshot/产品详情页.png'});
+
   let proArrowDown = setInterval(()=>{
     ArrowCount++;
     page.keyboard.press('ArrowDown');
@@ -40,6 +51,9 @@ const iPhone = devices['iPhone 6'];
   await page.waitFor(2000);
   await page.click('.comfire_btn');
   await page.waitFor(2000);
+
+  await page.screenshot({path: './screenshot/产品规格.png'});
+
   await page.evaluate(() => {
     document.querySelectorAll('.btn')[1].click();
   });
@@ -49,8 +63,14 @@ const iPhone = devices['iPhone 6'];
 
   //进入订单确认页
   await page.waitFor(3000);
+
+  await page.screenshot({path: './screenshot/订单确认页.png'});
+
   await page.click('.useCardLink');
-  await page.waitFor(4000);
+  await page.waitFor(3000);
+
+  await page.screenshot({path: './screenshot/订单优惠券选择.png'});
+
   const userCard = await page.evaluate(() => {
     const userCard = document.querySelector('#choose_card').children[3].children[0];
     userCard.click();
@@ -60,13 +80,10 @@ const iPhone = devices['iPhone 6'];
     const submitOrder = document.querySelector('#app').children[6].children[0];
     submitOrder.click();
   });
-  await page.waitFor(4000);
-  const payConfirmLink = await page.evaluate(() => {
-    return window.location.href
-  });
 
   //进入支付确认页
-  await page.waitFor(2000);
+  await page.waitFor(4000);
+  await page.screenshot({path: './screenshot/支付确认页.png'});
 
   //回到首页
   await page.goto('http://mstore.ppdai.com/');
@@ -91,9 +108,15 @@ const iPhone = devices['iPhone 6'];
   },50);
   await page.waitFor(2000);
   await page.click('.touser');
-  await page.waitFor(2000);
+  await page.waitFor(3000);
+
+  await page.screenshot({path: './screenshot/用户中心.png'});
+
   await page.click('.myOrderLink')
   await page.waitFor(4000)
+
+  await page.screenshot({path: './screenshot/用户订单列表.png'});
+
   await page.click('.back')
   // await page.screenshot({path: 'example.png'});
   // await page.pdf({path: 'example.pdf', format: 'A4'});
