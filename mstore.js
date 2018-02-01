@@ -63,7 +63,7 @@ const iPhone = devices['iPhone 6'];
   });
 
   //进入支付确认页
-  await page.waitFor(4000);
+  await page.waitFor(7000);
 
   //回到首页
   await page.goto('http://mstore.ppdai.com/');
@@ -86,12 +86,20 @@ const iPhone = devices['iPhone 6'];
       ArrowCount = 0;
     }
   },50);
-  await page.waitFor(2000);
+  await page.waitFor(3000);
   await page.click('.touser');
-  await page.waitFor(2000);
+  await page.waitFor(5000);
   await page.click('.myOrderLink')
-  await page.waitFor(4000)
+  await page.waitFor(6000)
   await page.click('.back')
+  await page.waitFor(3000)
+  await page.click('.myCardLink')
+  await page.waitFor(3000)
+  await page.click('a[href="#2"]')
+  await page.waitFor(2000)
+  await page.click('a[href="#-1"]')
+  await page.waitFor(3000)
+  await page.goto('http://mstore.ppdai.com/')
   // await page.screenshot({path: 'example.png'});
   // await page.pdf({path: 'example.pdf', format: 'A4'});
   // await browser.close();
