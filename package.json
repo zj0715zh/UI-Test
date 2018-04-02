@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/zj0715zh/UI-Test#readme",
   "dependencies": {
-    "puppeteer": "^1.0.0"
+    "puppeteer": "^1.2.0"
   }
 }
